@@ -1,0 +1,30 @@
+--Create a cosmetics store database
+
+CREATE TABLE cosmetics(id INTEGER PRIMARY KEY, name TEXT, rating NUMERIC, price NUMERIC, in_stock TEXT);
+
+INSERT INTO cosmetics VALUES
+(1, 'Milani Face Palette', 4.5, 14.99, 'no'),
+(2, 'Hawaiian Tropic Sunscreen Powder', 4, 19.69, 'yes'),
+(3, 'essence Banana Powder', 4.5, 4.99, 'yes'),
+(4, 'Naturium Vitamin C Serum', 4.5, 19.99, 'yes'),
+(5, 'Neutrogena Face Moisturizer', 5, 19.59, 'yes'),
+(6, 'Olay Face Moisturizer', 4.5, 29.99, 'yes'),
+(7, 'CeraVe Acne Treatment', 4.5, 18.99, 'yes'),
+(8, 'Hero Acne Patches', 4.5, 8.99, 'yes'),
+(9, 'Pixi Eye Patches', 4, 24.00, 'no'),
+(10, 'COVERGIRL Eyeliner', 4, 4.59, 'yes'),
+(11, 'Neutrogena Hand Cream', 4.5, 4.49, 'yes'),
+(12, 'Mielle Hair Oil', 4.5, 10.29, 'yes'),
+(13,'NYX Eyebrow Pencil', 4.5, 10.99, 'yes'),
+(14, 'Tree Hut Body Scrub', 5, 8.99, 'yes'),
+(15, 'Batiste Dry Shampoo', 4.5, 7.99, 'yes');
+
+--display the database ordered by price.
+SELECT * FROM cosmetics
+ORDER BY price desc;
+
+--which items have a perfect rating?
+SELECT * FROM cosmetics WHERE rating=5;
+
+--what is the average price of all items?
+SELECT AVG(price) FROM cosmetics;
