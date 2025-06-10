@@ -70,26 +70,26 @@ GROUP BY industry
 ORDER BY average_revenue DESC
 LIMIT 5;
 
+--Industries where the total revenue is over 2000
+SELECT industry, SUM(revenue) AS total_industry_revenue
+FROM fortune_companies
+GROUP BY industry
+HAVING total_industry_revenue > 2000
+ORDER BY total_industry_revenue DESC;
+
 --The number of companies that have healthcare benefits and atleast 12 weeks of maternity leave
 SELECT COUNT(*)
 FROM fortune_companies
 WHERE healthcare_benefits = 1
 AND maternity_leave_weeks >= 12;
 
---The number of companies per industry that are on the list that have heathcare benefits
-SELECT industry, COUNT(*) AS companies_with_healthcare
-FROM fortune_companies
-GROUP BY industry
-HAVING healthcare_benefits =1 
-ORDER BY companies_with_healthcare DESC;
-
 --Description of the benefits of each company
 SELECT company_name,
 	CASE 
 		WHEN healthcare_benefits = 1 
-    	AND maternity_leave_weeks > 0 THEN "healthcare and maternity leave"
-    	WHEN healthcare_benefits = 1 THEN "healthcare"
-    	ELSE "no benefits"
+    		AND maternity_leave_weeks > 0 THEN "healthcare and maternity leave"
+    		WHEN healthcare_benefits = 1 THEN "healthcare"
+    		ELSE "no benefits"
 	END AS benefits_description
  FROM fortune_companies
  ORDER BY benefits_description;
