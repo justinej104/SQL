@@ -1,0 +1,50 @@
+--In this SQL, I'm querying a database with multiple tables in it to quantify statistics about customer and order data. 
+--Note: I'm adding these two lines to any queries where I use order_id to make sure I have clean data: WHERE length(order_id) = 6 AND order_id <> 'Order ID' 
+
+--How many unique orders were placed in January? In other words, how many distinct order ids do we have?
+SELECT COUNT(DISTINCT orderID) 
+FROM BIT_DB.JanSales 
+WHERE length(orderID) = 6 
+AND orderID <> 'Order ID';
+
+--How many of those orders were for an iPhone?
+SELECT COUNT(DISTINCT orderID) 
+FROM BIT_DB.JanSales 
+WHERE length(orderID) = 6 
+AND orderID <> 'Order ID'
+AND Product = 'iPhone';
+
+--Select the customer account numbers for all the orders that were placed in February.
+SELECT DISTINCT customers.acctnum
+FROM BIT_DB.FebSales
+LEFT JOIN BIT_DB.customers 
+ON FebSales.orderID = customers.order_id
+WHERE length(orderID) = 6 
+AND orderID <> 'Order ID';
+
+--Which product was the cheapest one sold in January, and what was the price?
+SELECT DISTINCT Product, price
+FROM BIT_DB.JanSales
+WHERE price IN(SELECT MIN(price) FROM BIT_DB.JanSales);
+
+--What is the total revenue for each product sold in January?
+SELECT Product, SUM(Quantity)*price AS TotalRevenue 
+FROM BIT_DB.JanSales 
+WHERE length(orderID) = 6 AND orderID <> 'Order ID'
+GROUP BY Product;
+
+--Which products were sold in February at 548 Lincoln St, Seattle, WA 98101, how many of each were sold, and what was the total revenue?
+SELECT Product, SUM(Quantity), SUM(Quantity)*price AS TotalRevenue 
+FROM BIT_DB.FebSales 
+WHERE location = '548 Lincoln St, Seattle, WA 98101'
+GROUP BY Product;
+
+
+--How many customers ordered more than 2 products at a time in February, and what was the average amount spent for those customers?
+SELECT COUNT(DISTINCT customers.acctnum), AVG(FebSales.Quantity*FebSales.price) AS AverageAmountSpent
+FROM BIT_DB.FebSales
+LEFT JOIN BIT_DB.customers 
+ON FebSales.orderID = customers.order_id
+WHERE length(FebSales.orderID) = 6 
+AND FebSales.orderID <> 'Order ID'
+AND FebSales.Quantity > 2;
